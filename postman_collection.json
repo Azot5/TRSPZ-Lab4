@@ -1,0 +1,228 @@
+{
+	"info": {
+		"_postman_id": "c123f3ed-12ab-4f0b-8ad4-0fa04bd8657a",
+		"name": "Lab 4 test MK2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\": \"testuser\", \"password\": \"password123\"}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"register"
+					]
+				}
+			}
+		},
+		{
+			"name": "Login User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\": \"testuser\", \"password\": \"password123\"}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"// Перевіряємо, чи відповідь є дійсним JSON",
+							"if (pm.response.headers.get('Content-Type')?.includes('application/json')) {",
+							"    try {",
+							"        // Парсимо JSON",
+							"        const jsonData = pm.response.json();",
+							"        ",
+							"        // Зберігаємо токен, якщо він присутній у відповіді",
+							"        if (jsonData.token) {",
+							"            pm.environment.set('token', jsonData.token);",
+							"            console.log('Token saved:', jsonData.token);",
+							"        } else {",
+							"            console.warn('Token not found in the response body');",
+							"        }",
+							"    } catch (e) {",
+							"        console.error('Failed to parse JSON response:', e);",
+							"    }",
+							"} else {",
+							"    console.warn('Response is not JSON. Content-Type:', pm.response.headers.get('Content-Type'));",
+							"}"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Get Categories",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"category"
+					]
+				}
+			}
+		},
+		{
+			"name": "Create Category",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"Food\", \"user_id\": 1}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/category",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"category"
+					]
+				}
+			}
+		},
+		{
+			"name": "Create Account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\": 1, \"balance\": 100.00}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/account",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"account"
+					]
+				}
+			}
+		},
+		{
+			"name": "Create Record",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"user_id\": 1, \"category_id\": 1, \"amount\": 50.00, \"timestamp\": \"2024-12-14T12:00:00\"}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/record",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"record"
+					]
+				}
+			}
+		},
+		{
+			"name": "Get Account",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/account/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"account",
+						"1"
+					]
+				}
+			}
+		}
+	]
+}
